@@ -5,6 +5,18 @@ ehthumbs.db
 # Folder config file
 Desktop.ini
 
+
+*.class
+
+# Package Files #
+*.jar
+*.war
+*.ear
+/target
+/.settings
+/.classpath
+/.project
+
 # Recycle Bin used on file shares
 $RECYCLE.BIN/
 
