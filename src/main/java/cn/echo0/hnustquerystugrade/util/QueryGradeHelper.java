@@ -5,6 +5,7 @@
  */
 package cn.echo0.hnustquerystugrade.util;
 
+import cn.echo0.hnustquerystugrade.common.ApiUrl;
 import cn.echo0.hnustquerystugrade.common.HttpRequestHelper;
 import static cn.echo0.hnustquerystugrade.common.HttpRequestHelper.sendPost;
 import static cn.echo0.hnustquerystugrade.util.VerifyCodeAndCookieIdHelper.getValidVerifyCodeAndSessionID;
@@ -18,9 +19,6 @@ import net.sourceforge.tess4j.TesseractException;
  * @author Ech0
  */
 public class QueryGradeHelper {
-
-    private static String logonUrl = "http://kdjw.hnust.cn/kdjw/Logon.do?method=logon";
-    private static String queryGradeUrl = "http://kdjw.hnust.cn/kdjw/xszqcjglAction.do?method=queryxscj";
 //    http://kdjw.hnust.cn/kdjw/Logon.do?method=logon
 //    PASSWORD: ***
 //    RANDOMCODE: xxc1
@@ -40,15 +38,13 @@ public class QueryGradeHelper {
         String verifyCodeAndSessionId = getValidVerifyCodeAndSessionID();
         String verifyCode = verifyCodeAndSessionId.substring(0, 4);
         String sessionId = verifyCodeAndSessionId.substring(5);
-        System.out.println(verifyCode);
-        System.out.println(sessionId);
         Properties requestProperties = new Properties();
         requestProperties.setProperty("Cookie", sessionId);
         Properties requestParameters = new Properties();
         requestParameters.setProperty("USERNAME", username);
         requestParameters.setProperty("PASSWORD", password);
         requestParameters.setProperty("RANDOMCODE", verifyCode);
-        String result = sendPost(logonUrl, requestProperties, requestParameters, "utf-8");
+        String result = sendPost(ApiUrl.LOGON, requestProperties, requestParameters, "utf-8");
         int tryTimes = 0;
         while (result.length() > 200 && tryTimes < 5) {//尝试五次
             //重新获取验证码
@@ -59,7 +55,7 @@ public class QueryGradeHelper {
             requestProperties.setProperty("Cookie", sessionId);
             requestParameters.setProperty("RANDOMCODE", verifyCode);
             tryTimes++;
-            result = sendPost(logonUrl, requestProperties, requestParameters, "utf-8");
+            result = sendPost(ApiUrl.LOGON, requestProperties, requestParameters, "utf-8");
         }
         if (result.length() < 200) {
             return sessionId;
@@ -73,9 +69,13 @@ public class QueryGradeHelper {
         }
         Properties requestProperties = new Properties();
         requestProperties.setProperty("Cookie", sessionId);
-        return HttpRequestHelper.sendGet(queryGradeUrl, requestProperties, null, "UTF-8");
+        return HttpRequestHelper.sendGet(ApiUrl.QUERYGRADE, requestProperties, null, "UTF-8");
+    }
+    
+    public static String getGrade(String stuId , String password ) throws IOException, MalformedURLException, TesseractException{
+       return ParseHtml.getGradeFromHtml(getGradeHtml(tryToLogin(stuId, password)));
     }
     public static void main(String[] args) throws IOException, MalformedURLException, TesseractException {
-        System.out.println(getGradeHtml(tryToLogin("1405020207", "200219")));
+        System.out.println(getGrade("1405020207", "200219"));
     }
 }

@@ -5,6 +5,7 @@
  */
 package cn.echo0.hnustquerystugrade.util;
 
+import cn.echo0.hnustquerystugrade.common.ApiUrl;
 import static cn.echo0.hnustquerystugrade.common.VerifyCodeStringHelper.handleResultString;
 import static cn.echo0.hnustquerystugrade.util.VerifyCodeImgHelper.magnifyAndGrayImg;
 import java.awt.image.BufferedImage;
@@ -22,12 +23,13 @@ import net.sourceforge.tess4j.TesseractException;
  * @author Ech0
  */
 public class VerifyCodeAndCookieIdHelper {
-    public static String urlString = "http://kdjw.hnust.cn/kdjw/verifycode.servlet";
 //    wall;JSESSIONID=B6C643FE4DC36E74A4E95C64E6E82C69
     public static String getVerifyCodeAndSessionID() throws MalformedURLException, IOException, TesseractException {
         ITesseract instance = new Tesseract();  // JNA Interface Mapping  
+//        System.out.println(VerifyCodeAndCookieIdHelper.class.getClassLoader().getResource("").getPath());
+//        instance.setDatapath(VerifyCodeAndCookieIdHelper.class.getClassLoader().getResource("").getPath());
         instance.setLanguage("eng");
-        URL url = new URL(urlString);
+        URL url = new URL(ApiUrl.VERIFY);
         HttpURLConnection conn = (HttpURLConnection) url.openConnection();
         //Set-Cookie: JSESSIONID=B6C643FE4DC36E74A4E95C64E6E82C69; Path=/kdjw
         String sessionID = conn.getHeaderField("Set-Cookie").split(";")[0];
