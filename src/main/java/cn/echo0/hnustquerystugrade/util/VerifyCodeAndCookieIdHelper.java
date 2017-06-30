@@ -17,7 +17,6 @@ import javax.imageio.ImageIO;
 import net.sourceforge.tess4j.ITesseract;
 import net.sourceforge.tess4j.Tesseract;
 import net.sourceforge.tess4j.TesseractException;
-
 /**
  *
  * @author Ech0
@@ -35,6 +34,7 @@ public class VerifyCodeAndCookieIdHelper {
         InputStream is = conn.getInputStream();
         BufferedImage image = ImageIO.read(is);
         image = magnifyAndGrayImg(image);
+        is.close();
         return handleResultString(instance.doOCR(image))+";"+sessionID;
     }
     /**
@@ -44,15 +44,13 @@ public class VerifyCodeAndCookieIdHelper {
      * @throws MalformedURLException
      * @throws TesseractException 
      */
+    // 测试了两千次 ，成功率为0.677 。
     public static String getValidVerifyCodeAndSessionID() throws IOException, MalformedURLException, TesseractException {
          String result = getVerifyCodeAndSessionID();
         while (result.charAt(4)!=';') {
             result = getVerifyCodeAndSessionID();
         }
         return result;
-    }
-    public static void main(String[] args) throws IOException, MalformedURLException, TesseractException {
-        System.out.println(getValidVerifyCodeAndSessionID());
     }
 }
 

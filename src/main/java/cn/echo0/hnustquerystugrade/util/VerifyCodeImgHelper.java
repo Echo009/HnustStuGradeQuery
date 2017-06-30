@@ -26,8 +26,7 @@ public class VerifyCodeImgHelper {
      */
     public static BufferedImage magnifyAndGrayImg(File file) {
         BufferedImage imageData = null;
-        try {
-            InputStream in = new FileInputStream(file);
+        try( InputStream in = new FileInputStream(file)) {
             BufferedImage image = ImageIO.read(in);
             imageData = ImageHelper.convertImageToGrayscale(ImageHelper.getSubImage(image, 3, 4, image.getWidth() - 20, image.getHeight() - 10));  //È¥±ß¿ò »Ò»¯
             imageData = ImageHelper.getScaledInstance(imageData, imageData.getWidth() * 5, imageData.getHeight() * 5);  //½«Í¼Æ¬À©´ó5±¶
