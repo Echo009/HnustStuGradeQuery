@@ -41,9 +41,9 @@
     + 失败则返回的是一个html页面
       -包含以下关键内容
         - 验证码错误 
-          - ·<span style="color: red;" id="errorinfo">验证码错误!!</span>·
+          - `<span style="color: red;" id="errorinfo">验证码错误!!</span>`
         - 用户名或者密码错误
-          - ·<span style="color: red;" id="errorinfo">验证码错误!!</span>·
+          - `<span style="color: red;" id="errorinfo">该帐号不存在或密码错误,请联系管理员!</span>`
 - 成绩查询接口
   - Post http://kdjw.hnust.cn/kdjw/xszqcjglAction.do?method=queryxscj	
   - 请求头部
